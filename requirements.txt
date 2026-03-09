@@ -7,3 +7,6 @@ scikit-learn
 tqdm
 opencv-python
 Pillow
+flask
+flask-cors
+gunicorn
