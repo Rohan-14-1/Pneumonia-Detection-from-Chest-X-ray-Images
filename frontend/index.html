@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PneumoScan AI | Advanced Diagnostics</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="bg-blur"></div>
+
+<main class="app-container">
+    <header class="main-header">
+        <div class="logo">🩺 Pneumo<span>Scan</span> AI</div>
+        <p>Next-generation neural analysis for pulmonary health.</p>
+    </header>
+
+    <div class="glass-card" id="dropZone">
+        <div class="upload-section">
+            <label class="btn-secondary">
+                <input type="file" id="imageInput" accept="image/*">
+                Select Chest X-ray
+            </label>
+            <p class="drag-hint">or drag and drop the file anywhere</p>
+        </div>
+
+        <div class="viewer-container" id="viewerContainer">
+            <div id="scanOverlay" class="scan-line hidden"></div>
+            <div id="placeholderText" class="placeholder">
+                <p>No image loaded</p>
+            </div>
+            <img id="previewImage" class="hidden" alt="X-ray Preview">
+        </div>
+
+        <button id="analyzeBtn" class="action-btn" onclick="predict()">
+            Run Neural Analysis
+        </button>
+
+        <div id="loader" class="loader-container hidden">
+            <div class="spinner"></div>
+            <p>Processing Voxel Data...</p>
+        </div>
+
+        <div id="resultBox" class="result-display hidden">
+            <div class="status-badge">DIAGNOSTIC REPORT</div>
+            <h2 id="predictionText">--</h2>
+            
+            <div class="metric-group">
+                <div class="metric-header">
+                    <span>Confidence Score</span>
+                    <span class="metric-value"><span id="confidenceText">0</span>%</span>
+                </div>
+                <div class="progress-track">
+                    <div id="confidenceBar" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Risk Level</span>
+                    <span id="riskLevel" class="value">--</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Process Time</span>
+                    <span id="analysisTime" class="value">--</span>
+                </div>
+            </div>
+            
+            <p id="recommendationText" class="disclaimer"></p>
+        </div>
+    </div>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
