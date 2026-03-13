@@ -43,11 +43,11 @@ def main():
     accuracy, precision, recall, f1 = evaluate_model(model, test_loader)
 
     print("\nFinal Evaluation Results")
-    print("----------------------------")
-    print(f"Accuracy: {accuracy:.4f}")
-    print(f"Precision: {precision:.4f}")
-    print(f"Recall: {recall:.4f}")
-    print(f"F1 Score: {f1:.4f}")
+    # print("----------------------------")
+    # print(f"Accuracy: {accuracy:.4f}")
+    # print(f"Precision: {precision:.4f}")
+    # print(f"Recall: {recall:.4f}")
+    # print(f"F1 Score: {f1:.4f}")
 
     print("\nSaving graphs...")
 
