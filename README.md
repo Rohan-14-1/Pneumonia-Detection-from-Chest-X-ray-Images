@@ -1,5 +1,4 @@
 # Pneumonia-Detection-from-Chest-X-ray-Images
-# Pneumonia Detection AI (Chest X-Ray)
 
 An AI-powered system that detects **Pneumonia from Chest X-Ray images** using **Deep Learning (CNN) and Numerical Optimization techniques**.
 The system trains a neural network to classify chest X-ray images into **Normal** or **Pneumonia** and provides predictions through a web interface.
