@@ -96,7 +96,7 @@ The dataset contains two classes:
 Clone the repository:
 
 ```
-git clone https://github.com/Rohan-14-1/pneumonia-detection-ai.git
+git clone https://github.com/Rohan-14-1/Pneumonia-Detection-from-Chest-X-ray-Images.git
 cd pneumonia-detection-ai
 ```
 
