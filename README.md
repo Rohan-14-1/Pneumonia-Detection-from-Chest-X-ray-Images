@@ -200,6 +200,8 @@ The high **recall score** indicates that the model successfully detects most pne
 ## Author
 
 Rohan
-B.Tech Artificial Intelligence and Machine Learning
-Jain Deemed-to-be University
+<br>
+B.Tech Artificial Intelligence and Machine Learning.
+<br>
+Jain Deemed-to-be University.
 
