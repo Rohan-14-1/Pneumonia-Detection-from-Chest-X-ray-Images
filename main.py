@@ -12,7 +12,11 @@ from utils.plot_results import plot_loss, plot_accuracy
 
 def main():
 
+    print("Loading dataset...")
+
     train_loader, test_loader = load_datasets(DATASET_PATH)
+
+    print("Initializing model...")
 
     model = CNNModel().to(DEVICE)
 
@@ -24,7 +28,9 @@ def main():
         beta=MOMENTUM
     )
 
-    losses = train_model(
+    print("Starting training...")
+
+    losses, accuracies = train_model(
         model,
         train_loader,
         optimizer,
@@ -32,18 +38,29 @@ def main():
         EPOCHS
     )
 
+    print("Evaluating model...")
+
     accuracy, precision, recall, f1 = evaluate_model(model, test_loader)
 
-    print("\nResults")
-    print("Accuracy:", accuracy)
-    print("Precision:", precision)
-    print("Recall:", recall)
-    print("F1 Score:", f1)
+    print("\nFinal Evaluation Results")
+    print("----------------------------")
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"Precision: {precision:.4f}")
+    print(f"Recall: {recall:.4f}")
+    print(f"F1 Score: {f1:.4f}")
+
+    print("\nSaving graphs...")
 
     plot_loss(losses)
-    plot_accuracy([accuracy])
+    plot_accuracy(accuracies)
+
+    print("Graphs saved in results/ folder")
+
+    print("Saving model...")
 
     torch.save(model.state_dict(), MODEL_SAVE_PATH)
+
+    print("Model saved successfully!")
 
 
 if __name__ == "__main__":
