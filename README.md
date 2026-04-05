@@ -125,7 +125,7 @@ This will:
 
 ---
 
-## Run the API
+## How To Run
 
 Start the Flask backend server:
 
@@ -143,11 +143,16 @@ API endpoint:
 
 ## Run the Frontend
 
-Open the following file in your browser:
+```
+You will get a hosted link after running api.py.
+You can also access it locally at:
 
+👉 http://127.0.0.1:5000/
+
+or
+👉 http://localhost:5000/
 ```
-frontend/index.html
-```
+Open the following file in your browser and Past local hosted link:
 
 Upload a chest X-ray image to get prediction results.
 
