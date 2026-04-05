@@ -125,7 +125,7 @@ This will:
 
 ---
 
-## How To Run
+## Run The Model
 
 Start the Flask backend server:
 
