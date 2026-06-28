@@ -6,7 +6,7 @@
 // Automatically use local Flask server when testing locally, otherwise use production Render backend
 const API_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.protocol === "file:"
     ? "http://localhost:5000"
-    : "https://pneumonia-detection-from-chest-x-ray-images.onrender.com";
+    : "https://pneumonia-detection-from-chest-x-ray.onrender.com";
 
 // ═══════════════ DOM SELECTORS ═══════════════
 const imageInput = document.getElementById('imageInput');
