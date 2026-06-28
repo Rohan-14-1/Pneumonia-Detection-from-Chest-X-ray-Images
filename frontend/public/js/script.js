@@ -3,9 +3,10 @@
 // (Navbar logic is in navbar.js)
 // ═══════════════════════════════════════════════════
 
-// ── API Configuration ──
-// Replace with your Cloud Run / Render backend URL after deployment
-const API_URL = "https://pneumonia-detection-from-chest-x-ray-images.onrender.com";
+// Automatically use local Flask server when testing locally, otherwise use production Render backend
+const API_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.protocol === "file:"
+    ? "http://localhost:5000"
+    : "https://pneumonia-detection-from-chest-x-ray-images.onrender.com";
 
 // ═══════════════ DOM SELECTORS ═══════════════
 const imageInput = document.getElementById('imageInput');
