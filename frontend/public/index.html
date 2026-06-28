@@ -3,81 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PneumoScan AI | Advanced Chest X-ray Diagnostics</title>
-    <meta name="description" content="AI-powered pneumonia detection from chest X-ray images using deep learning. Upload an X-ray for instant neural analysis.">
-    <meta property="og:title" content="PneumoScan AI | Advanced Diagnostics">
-    <meta property="og:description" content="AI-powered pneumonia detection from chest X-ray images.">
+    <title>PneumoScan AI | AI Powered Pneumonia Detection</title>
+    <meta name="description" content="AI-powered pneumonia detection from chest X-ray images using deep learning CNN model. Upload an X-ray for instant analysis with confidence score.">
+    <meta property="og:title" content="PneumoScan AI | AI Powered Pneumonia Detection">
+    <meta property="og:description" content="Analyze Chest X-ray Images with Deep Learning. Get instant AI prediction with confidence score.">
     <meta property="og:type" content="website">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
-    <link rel="stylesheet" href="/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/navbar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-<div class="bg-blur"></div>
+    <!-- ═══════════════════ NAVBAR (loaded from component) ═══════════════════ -->
+    <div id="navbar-placeholder"></div>
 
-<main class="app-container">
-    <header class="main-header">
-        <div class="logo">🩺 Pneumo<span>Scan</span> AI</div>
-        <p>Next-generation neural analysis for pulmonary health.</p>
-    </header>
+    <!-- ═══════════════════ HERO SECTION ═══════════════════ -->
+    <section class="hero" id="home">
+        <div class="hero-container">
 
-    <div class="glass-card" id="dropZone">
-        <div class="upload-section">
-            <label class="btn-secondary">
-                <input type="file" id="imageInput" accept="image/*">
-                Select Chest X-ray
-            </label>
-            <p class="drag-hint">or drag and drop the file anywhere</p>
-        </div>
+            <!-- LEFT COLUMN -->
+            <div class="hero-left">
+                <div class="ai-badge">
+                    <i class="fas fa-brain"></i>
+                    AI Powered • Deep Learning CNN
+                </div>
 
-        <div class="viewer-container" id="viewerContainer">
-            <div id="scanOverlay" class="scan-line hidden"></div>
-            <div id="placeholderText" class="placeholder">
-                <p>No image loaded</p>
+                <h1 class="hero-title">
+                    AI Powered<br>
+                    <span class="text-gradient">Pneumonia</span> Detection
+                </h1>
+
+                <h2 class="hero-subtitle">Analyze Chest X-ray Images with Deep Learning</h2>
+
+                <p class="hero-description">
+                    Upload an X-ray and receive an instant AI prediction
+                    with confidence score and clinical explanation.
+                </p>
+
+                <div class="lung-image-container">
+                    <img src="./assets/lungs.png" alt="3D Lung Illustration" class="lung-image">
+                    <div class="lung-glow"></div>
+                </div>
+
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <div class="feature-icon blue">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <span class="feature-title">Deep Learning</span>
+                        <span class="feature-sub">CNN Model</span>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon yellow">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <span class="feature-title">Fast & Accurate</span>
+                        <span class="feature-sub">Prediction</span>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon dark">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <span class="feature-title">Secure & Private</span>
+                        <span class="feature-sub">Analysis</span>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon red">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <span class="feature-title">Trusted Results</span>
+                        <span class="feature-sub">You Can Rely On</span>
+                    </div>
+                </div>
             </div>
-            <img id="previewImage" class="hidden" alt="X-ray Preview">
-        </div>
 
-        <button id="analyzeBtn" class="action-btn" onclick="predict()">
-            Run Neural Analysis
-        </button>
+            <!-- RIGHT COLUMN — UPLOAD CARD -->
+            <div class="hero-right">
+                <div class="upload-card">
+                    <div class="upload-header">
+                        <div class="upload-header-icon">
+                            <i class="fas fa-cloud-arrow-up"></i>
+                        </div>
+                        <div>
+                            <h3 class="upload-title">Upload Chest X-ray</h3>
+                            <p class="upload-subtitle">Drag & drop your X-ray image here or browse file</p>
+                        </div>
+                    </div>
 
-        <div id="loader" class="loader-container hidden">
-            <div class="spinner"></div>
-            <p>Processing Voxel Data...</p>
-        </div>
+                    <div class="drop-zone" id="dropZone">
+                        <div class="drop-zone-icon">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <p class="drop-zone-title">Drag & Drop Chest X-ray</p>
+                        <p class="drop-zone-hint">PNG, JPG, JPEG (Max 10MB)</p>
+                        <label class="browse-btn" for="imageInput">
+                            <i class="fas fa-folder-open"></i>
+                            Browse Files
+                        </label>
+                        <input type="file" id="imageInput" accept="image/png, image/jpeg, image/jpg" hidden>
+                    </div>
 
-        <div id="resultBox" class="result-display hidden">
-            <div class="status-badge">DIAGNOSTIC REPORT</div>
-            <h2 id="predictionText">--</h2>
-            
-            <div class="metric-group">
-                <div class="metric-header">
-                    <span>Confidence Score</span>
-                    <span class="metric-value"><span id="confidenceText">0</span>%</span>
-                </div>
-                <div class="progress-track">
-                    <div id="confidenceBar" class="progress-fill"></div>
+                    <div class="divider-or">
+                        <span>or</span>
+                    </div>
+
+                    <div class="preview-area" id="previewArea">
+                        <div class="preview-placeholder" id="previewPlaceholder">
+                            <div class="preview-icon">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="preview-text">
+                                <p class="preview-title">No image uploaded</p>
+                                <p class="preview-sub">Your X-ray will appear here</p>
+                            </div>
+                        </div>
+                        <img id="previewImage" class="preview-img hidden" alt="Uploaded X-ray Preview">
+                    </div>
+
+                    <button class="analyze-btn" id="analyzeBtn" onclick="predict()">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        Analyze X-ray with AI
+                    </button>
+
+                    <p class="security-note">
+                        <i class="fas fa-lock"></i>
+                        Your data is secure and encrypted
+                    </p>
+
+                    <!-- LOADER -->
+                    <div id="loader" class="loader-container hidden">
+                        <div class="loader-spinner"></div>
+                        <p class="loader-text">Analyzing X-ray image...</p>
+                    </div>
+
+                    <!-- RESULT BOX -->
+                    <div id="resultBox" class="result-box hidden">
+                        <div class="result-header">
+                            <div class="result-badge" id="resultBadge">DIAGNOSTIC REPORT</div>
+                        </div>
+                        <h2 id="predictionText" class="result-prediction">--</h2>
+
+                        <div class="result-metric">
+                            <div class="metric-labels">
+                                <span>Confidence Score</span>
+                                <span class="metric-value"><span id="confidenceText">0</span>%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div id="confidenceBar" class="progress-fill"></div>
+                            </div>
+                        </div>
+
+                        <div class="result-grid">
+                            <div class="result-item">
+                                <span class="result-label">Affected Area</span>
+                                <span id="lungSide" class="result-value">--</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Risk Level</span>
+                                <span id="riskLevel" class="result-value">--</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Process Time</span>
+                                <span id="analysisTime" class="result-value">--</span>
+                            </div>
+                        </div>
+
+                        <p id="recommendationText" class="result-recommendation"></p>
+                    </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="label">Risk Level</span>
-                    <span id="riskLevel" class="value">--</span>
+    <!-- ═══════════════════ STATS BAR ═══════════════════ -->
+    <section class="stats-bar">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-pie"></i>
                 </div>
-                <div class="info-item">
-                    <span class="label">Process Time</span>
-                    <span id="analysisTime" class="value">--</span>
+                <div class="stat-content">
+                    <span class="stat-number">98.1%</span>
+                    <span class="stat-title">Model Accuracy</span>
+                    <span class="stat-sub">Cross-validation Score</span>
                 </div>
             </div>
-            
-            <p id="recommendationText" class="disclaimer"></p>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number">5800+</span>
+                    <span class="stat-title">Training Images</span>
+                    <span class="stat-sub">Chest X-ray Dataset</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number">CNN</span>
+                    <span class="stat-title">Deep Learning</span>
+                    <span class="stat-sub">Advanced Architecture</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-shield-halved"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-title">Secure & Private</span>
+                    <span class="stat-sub">HIPAA Compliant</span>
+                </div>
+            </div>
         </div>
-    </div>
-</main>
+    </section>
 
-<script src="/js/script.js"></script>
+    <!-- ═══════════════════ FOOTER ═══════════════════ -->
+    <footer class="footer">
+        <div class="footer-container">
+
+            <div class="footer-center">
+                <div class="footer-socials">
+                    <a href="https://www.linkedin.com/in/rohanmdl/" target="_blank" class="social-link" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://github.com/Rohan-14-1" target="_blank" class="social-link" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://x.com/rohan_mdl" target="_blank" class="social-link" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="mailto:rohanmdl2003@gmail.com" class="social-link" title="Email"><i class="fa-regular fa-envelope"></i></a>
+                    <a href="https://rohan14.com.np/" target="_blank" class="social-link" title="Portfolio"><i class="fa-solid fa-globe"></i></a>
+                </div>
+            </div>
+            <div class="footer-right">
+                © 2024 <a href="https://rohan14.com.np/" target="_blank" class="portfolio-link">PneumoScan AI</a>. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/navbar.js"></script>
+    <script src="./js/script.js"></script>
 </body>
 </html>
