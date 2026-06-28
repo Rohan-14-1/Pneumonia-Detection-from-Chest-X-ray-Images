@@ -2,7 +2,7 @@
 // API Configuration
 // Replace this with your Cloud Run backend URL after deployment
 // ============================================================
-const API_URL = "https://pneumonia-detection-XXXXX-xx.a.run.app";
+const API_URL = "https://pneumonia-detection-from-chest-x-ray.onrender.com";
 
 // Selectors
 const imageInput = document.getElementById('imageInput');
