@@ -1,0 +1,623 @@
+/* ═══════════════════════════════════════════════════
+   HOW IT WORKS — Page-specific Stylesheet
+   ═══════════════════════════════════════════════════ */
+
+/* ── Hero Section ── */
+.hiw-hero {
+    padding-top: 120px;
+    padding-bottom: 40px;
+    text-align: center;
+}
+
+.hiw-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary-bg);
+    color: var(--primary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: var(--radius-pill);
+    margin-bottom: 20px;
+    border: 1px solid #bfdbfe;
+}
+
+.hiw-badge i {
+    font-size: 0.85rem;
+}
+
+.hiw-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 16px;
+    letter-spacing: -1.5px;
+}
+
+.hiw-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════════════
+   4-STEP PROCESS CARDS
+   ═══════════════════════════════════════════════════ */
+.hiw-steps {
+    padding: 20px 0 50px;
+    overflow: visible;
+}
+
+.hiw-steps-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+    align-items: stretch;
+    position: relative;
+}
+
+/* ── Individual Step Card ── */
+.step-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 38px 22px 28px;
+    text-align: center;
+    position: relative;
+    transition: var(--transition);
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.step-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+/* ── Step Number Badge ── */
+.step-number {
+    position: absolute;
+    top: -21px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 800;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+/* ── Step Icon ── */
+.step-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 1.35rem;
+}
+
+.step-icon.blue {
+    background: #dbeafe;
+    color: var(--primary);
+}
+
+.step-icon.green {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.step-icon.purple {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.step-icon.blue-dark {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.step-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.step-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+/* ═══════════════════════════════════════════════════
+   DASHED ARROWS BETWEEN CARDS
+   ═══════════════════════════════════════════════════ */
+.step-arrow {
+    position: absolute;
+    right: -36px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    width: 24px;
+}
+
+/* Dashed line */
+.step-arrow::before {
+    content: '';
+    display: block;
+    width: 18px;
+    height: 0;
+    border-top: 2px dashed var(--primary);
+}
+
+/* Arrow head */
+.step-arrow::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 7px solid var(--primary);
+    flex-shrink: 0;
+}
+
+/* Hide the Font Awesome icon inside arrow (we use CSS pseudo-elements) */
+.step-arrow i {
+    display: none;
+}
+
+.step-card:last-child .step-arrow {
+    display: none;
+}
+
+/* ═══════════════════════════════════════════════════
+   STEP DEMO CARDS (inner content)
+   ═══════════════════════════════════════════════════ */
+.step-demo {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-top: auto;
+}
+
+/* ── Step 01: Upload Demo ── */
+.upload-demo {
+    padding: 0;
+}
+
+.upload-box {
+    padding: 22px 16px;
+    border: 1.5px dashed #bfdbfe;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    margin: 8px;
+    text-align: center;
+}
+
+.upload-box-icon {
+    font-size: 1.8rem;
+    color: #2563eb;
+    margin: 0 auto 12px;
+    display: block;
+}
+
+.upload-box-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.upload-box-hint {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+/* ── Step 02: Analysis Demo ── */
+.analysis-demo {
+    background: #0f172a;
+}
+
+.analysis-viewer {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+}
+
+.analysis-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.scan-line-hiw {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--primary);
+    box-shadow: 0 0 15px var(--primary), 0 0 30px var(--primary);
+    animation: scanHiw 2.5s ease-in-out infinite;
+    z-index: 2;
+}
+
+@keyframes scanHiw {
+    0%, 100% { top: 0%; opacity: 0; }
+    10%, 90% { opacity: 1; }
+    50% { top: 100%; }
+}
+
+.analysis-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 40%, rgba(15, 23, 42, 0));
+    padding: 16px;
+    text-align: left;
+    z-index: 3;
+}
+
+.analysis-label {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.analysis-progress {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.analysis-progress-fill {
+    width: 60%;
+    height: 100%;
+    background: var(--primary);
+    border-radius: 2px;
+    animation: progressAnimate 2s infinite ease-in-out;
+}
+
+@keyframes progressAnimate {
+    0% { width: 10%; }
+    50% { width: 75%; }
+    100% { width: 100%; }
+}
+
+/* ── Step 03: Prediction Demo ── */
+.prediction-demo {
+    padding: 16px;
+    text-align: left;
+}
+
+.pred-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.pred-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.pred-value {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.pred-result {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #fef2f2;
+    border-radius: var(--radius-sm);
+    margin-bottom: 14px;
+}
+
+.pred-result i {
+    color: #ef4444;
+    font-size: 0.9rem;
+}
+
+.pred-result span {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ef4444;
+}
+
+.score-row {
+    margin-bottom: 6px;
+}
+
+.pred-bar-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.pred-bar-fill {
+    width: 92.7%;
+    height: 100%;
+    background: #ef4444;
+    border-radius: 3px;
+}
+
+.pred-status {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #ef4444;
+}
+
+/* ── Step 04: Insights Demo ── */
+.insights-demo {
+    padding: 16px;
+    text-align: left;
+}
+
+.insights-header {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 14px;
+}
+
+.insights-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.insights-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.insights-list li i {
+    color: #10b981;
+    font-size: 0.8rem;
+    margin-top: 1px;
+    flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   FEATURES BAR
+   ═══════════════════════════════════════════════════ */
+.hiw-features {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 30px 0;
+}
+
+.hiw-features-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.hiw-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.hiw-feat-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.hiw-feat-icon.blue {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.hiw-feat-icon.green {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+.hiw-feat-icon.purple {
+    background: #f5f3ff;
+    color: #6d28d9;
+}
+
+.hiw-feat-icon.orange {
+    background: #fff7ed;
+    color: #ea580c;
+}
+
+.hiw-feat-title {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 2px;
+}
+
+.hiw-feat-desc {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* ═══════════════════════════════════════════════════
+   DISCLAIMER BANNER
+   ═══════════════════════════════════════════════════ */
+.hiw-disclaimer {
+    padding: 30px 40px;
+}
+
+.hiw-disclaimer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 36px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.disclaimer-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.disclaimer-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--primary-bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.disclaimer-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 3px;
+}
+
+.disclaimer-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.disclaimer-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    transition: var(--transition);
+}
+
+.disclaimer-btn:hover {
+    background: #dbeafe;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.disclaimer-btn i {
+    font-size: 0.75rem;
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+    .hiw-steps-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+    }
+
+    .step-arrow {
+        display: none;
+    }
+
+    .hiw-features-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hiw-hero {
+        padding-top: 100px;
+        padding-bottom: 30px;
+    }
+
+    .hiw-title {
+        font-size: 2rem;
+    }
+
+    .hiw-subtitle br {
+        display: none;
+    }
+
+    .hiw-steps-container {
+        grid-template-columns: 1fr;
+        max-width: 420px;
+        padding: 0 20px;
+    }
+
+    .hiw-features-container {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+    }
+
+    .hiw-disclaimer {
+        padding: 30px 20px;
+    }
+
+    .hiw-disclaimer-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px;
+    }
+
+    .disclaimer-left {
+        flex-direction: column;
+    }
+}
