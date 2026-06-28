@@ -60,6 +60,21 @@ imageInput.addEventListener('change', (e) => {
     handleFile(e.target.files[0]);
 });
 
+// Camera input change
+const cameraInput = document.getElementById('cameraInput');
+if (cameraInput) {
+    cameraInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            const file = e.target.files[0];
+            // Assign the captured file to imageInput so predict() can access it
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            imageInput.files = dt.files;
+            handleFile(file);
+        }
+    });
+}
+
 
 // ═══════════════ DRAG & DROP ═══════════════
 dropZone.addEventListener('dragover', (e) => {

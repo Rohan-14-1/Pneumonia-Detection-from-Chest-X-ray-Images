@@ -98,11 +98,18 @@
                         </div>
                         <p class="drop-zone-title">Drag & Drop Chest X-ray</p>
                         <p class="drop-zone-hint">PNG, JPG, JPEG (Max 10MB)</p>
-                        <label class="browse-btn" for="imageInput">
-                            <i class="fas fa-folder-open"></i>
-                            Browse Files
-                        </label>
+                        <div class="upload-actions-container">
+                            <label class="browse-btn" for="imageInput">
+                                <i class="fas fa-folder-open"></i>
+                                Browse Files
+                            </label>
+                            <label class="camera-btn" for="cameraInput">
+                                <i class="fas fa-camera"></i>
+                                Take Photo
+                            </label>
+                        </div>
                         <input type="file" id="imageInput" accept="image/png, image/jpeg, image/jpg" hidden>
+                        <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
                     </div>
 
                     <div class="divider-or">

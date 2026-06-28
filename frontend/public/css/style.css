@@ -365,6 +365,37 @@ img {
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
+.upload-actions-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+}
+
+.camera-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 23, 42, 0.04);
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid var(--border);
+}
+
+.camera-btn:hover {
+    background: rgba(15, 23, 42, 0.08);
+    color: var(--text-main);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
 /* ── Divider ── */
 .divider-or {
     display: flex;
