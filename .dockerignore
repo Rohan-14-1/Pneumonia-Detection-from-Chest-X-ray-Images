@@ -1,0 +1,67 @@
+# ═══════════════════════════════════════════════════
+# .dockerignore — Exclude everything NOT needed by the API
+# ═══════════════════════════════════════════════════
+
+# ── Training data & datasets (large, inference-only at runtime) ──
+Dataset/
+data/
+
+# ── Model weights (loaded from GCS, not baked into image) ──
+checkpoints/
+
+# ── Training-only code & artifacts ──
+training/
+optimizers/
+results/
+train.py
+
+# ── Frontend (deployed separately on Vercel) ──
+frontend/
+
+# ── Utility scripts (not imported by api.py) ──
+utils/
+
+# ── Sample/test images ──
+image/
+
+# ── Documentation & notebooks ──
+notebooks/
+Report/
+README.md
+LICENSE
+
+# ── Python caches ──
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ── Jupyter notebooks ──
+*.ipynb
+.ipynb_checkpoints/
+
+# ── Version control ──
+.git/
+.gitignore
+
+# ── Docker & deployment config (not needed inside image) ──
+Dockerfile
+.dockerignore
+.gcloudignore
+docker-compose*.yml
+
+# ── Environment files (secrets should be in Secret Manager) ──
+.env
+.env.*
+.env.local
+.env.production
+
+# ── IDE / Editor / OS files ──
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db

@@ -1,0 +1,62 @@
+# ═══════════════════════════════════════════════════
+# .gcloudignore — Controls what gcloud builds submit uploads
+#
+# This file prevents large/unnecessary files from being
+# uploaded to Cloud Build. Only files needed to build the
+# Docker image should be included.
+# ═══════════════════════════════════════════════════
+
+# ── Include the .gcloudignore itself ──
+#!include:.gitignore
+
+# ── Training data & datasets ──
+Dataset/
+data/
+
+# ── Model weights (loaded from GCS at runtime) ──
+checkpoints/
+
+# ── Training-only code & artifacts ──
+training/
+optimizers/
+results/
+train.py
+
+# ── Frontend (deployed on Vercel) ──
+frontend/
+
+# ── Utility scripts (not imported by api.py) ──
+utils/
+
+# ── Sample/test images ──
+image/
+
+# ── Documentation & notebooks ──
+notebooks/
+Report/
+README.md
+LICENSE
+*.ipynb
+.ipynb_checkpoints/
+
+# ── Python caches ──
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+
+# ── Version control ──
+.git/
+.gitignore
+
+# ── Environment & secrets ──
+.env
+.env.*
+
+# ── IDE / Editor / OS files ──
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
