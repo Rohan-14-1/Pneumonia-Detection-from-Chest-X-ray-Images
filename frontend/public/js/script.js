@@ -182,3 +182,4 @@ function displayResults(data, processTime) {
         recommendationText.style.borderLeftColor = '#10b981';
     }
 }
+
