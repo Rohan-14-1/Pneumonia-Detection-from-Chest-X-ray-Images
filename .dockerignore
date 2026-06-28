@@ -6,20 +6,17 @@
 Dataset/
 data/
 
-# ── Model weights (loaded from GCS, not baked into image) ──
-checkpoints/
+
 
 # ── Training-only code & artifacts ──
 training/
-optimizers/
 results/
 train.py
 
 # ── Frontend (deployed separately on Vercel) ──
 frontend/
 
-# ── Utility scripts (not imported by api.py) ──
-utils/
+
 
 # ── Sample/test images ──
 image/
@@ -46,9 +43,6 @@ __pycache__/
 .gitignore
 
 # ── Docker & deployment config (not needed inside image) ──
-Dockerfile
-.dockerignore
-.gcloudignore
 docker-compose*.yml
 
 # ── Environment files (secrets should be in Secret Manager) ──
