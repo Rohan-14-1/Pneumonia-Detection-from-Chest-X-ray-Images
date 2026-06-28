@@ -1,69 +1,48 @@
-# ============================================================
-# Stage 1: Builder - Install Python dependencies
-# ============================================================
-FROM python:3.11-slim AS builder
+# Training data & datasets
+Dataset/
+data/
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+# Model weights (if loading from external storage)
+# checkpoints/
 
-WORKDIR /build
+# Training-only code & artifacts
+training/
+optimizers/
+results/
+train.py
 
-COPY requirements.txt .
+# Frontend (deployed separately on Vercel)
+frontend/
 
-RUN python -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
+# Sample/test images
+image/
 
-RUN pip install --upgrade pip
+# Documentation & notebooks
+notebooks/
+Report/
+README.md
+*.ipynb
 
-# Install CPU-only PyTorch
-RUN pip install --no-cache-dir \
-    torch torchvision \
-    --index-url https://download.pytorch.org/whl/cpu
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
 
-# Install remaining dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Version control
+.git/
+.gitignore
 
-# ============================================================
-# Stage 2: Runtime
-# ============================================================
-FROM python:3.11-slim
+# Docker & deployment config
+Dockerfile
+.dockerignore
+.gcloudignore
+docker-compose*.yml
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+# Environment files
+.env
 
-WORKDIR /app
-
-COPY --from=builder /opt/venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
-
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    libgl1 \
-    libglib2.0-0 && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN adduser --disabled-password --gecos "" appuser
-
-# Copy application files
-COPY api.py .
-COPY requirements.txt .
-
-COPY config/ config/
-COPY models/ models/
-COPY utils/ utils/
-COPY checkpoints/ checkpoints/
-
-# ===================== DEBUG =====================
-RUN echo "========== CHECKPOINTS ==========" && \
-    ls -lah checkpoints/ && \
-    echo "========== FIND PTH ==========" && \
-    find /app -name "*.pth"
-# =================================================
-
-RUN chown -R appuser:appuser /app
-
-USER appuser
-
-EXPOSE 8080
-
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 0 --access-logfile - --error-logfile - api:app"]
+# IDE / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
