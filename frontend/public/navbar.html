@@ -1,0 +1,54 @@
+<!-- ═══════════════════ NAVBAR COMPONENT ═══════════════════ -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <a href="/" class="nav-logo">
+            <div class="logo-icon">
+                <i class="fas fa-lungs"></i>
+            </div>
+            <span class="logo-text">Pneumo<strong>Scan AI</strong></span>
+        </a>
+        
+        <!-- Desktop Menu -->
+        <ul class="nav-links desktop-menu" id="navLinks">
+            <li><a href="/" class="nav-link">Home</a></li>
+            <li><a href="/how-it-works" class="nav-link">How it Works</a></li>
+            <li><a href="/about" class="nav-link">About</a></li>
+        </ul>
+
+        <div class="nav-right">
+            <div class="hipaa-badge">
+                <i class="fas fa-check-circle"></i>
+                HIPAA Compliant
+            </div>
+            
+            <!-- Mobile Menu Icon -->
+            <button class="mobile-toggle menu-icon" id="menuIcon" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Overlay -->
+<div class="nav-overlay" id="navOverlay"></div>
+
+<!-- Right Drawer (Mobile only) -->
+<div class="nav-drawer" id="navDrawer">
+    <div class="drawer-header">
+        <div class="drawer-logo">
+            <div class="logo-icon">
+                <i class="fas fa-lungs"></i>
+            </div>
+            <span class="logo-text">Pneumo<strong>Scan AI</strong></span>
+        </div>
+        <div class="close-icon" id="closeMenu">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+    
+    <ul class="drawer-links">
+        <li><a href="/" class="drawer-link">Home</a></li>
+        <li><a href="/how-it-works" class="drawer-link">How it Works</a></li>
+        <li><a href="/about" class="drawer-link">About</a></li>
+    </ul>
+</div>
