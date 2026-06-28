@@ -1,3 +1,9 @@
+// ============================================================
+// API Configuration
+// Replace this with your Cloud Run backend URL after deployment
+// ============================================================
+const API_URL = "https://pneumonia-detection-XXXXX-xx.a.run.app";
+
 // Selectors
 const imageInput = document.getElementById('imageInput');
 const previewImage = document.getElementById('previewImage');
@@ -69,7 +75,7 @@ async function predict() {
     formData.append("file", file);
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/predict", {
+        const response = await fetch(`${API_URL}/predict`, {
             method: "POST",
             body: formData
         });
@@ -103,7 +109,7 @@ async function predict() {
             recommendationText.innerText = isPneumonia 
                 ? `Anomalies detected in ${data.lung}. Correlation with clinical findings and immediate specialist consultation is required.`
                 : "No significant abnormalities detected. Continue routine clinical monitoring.";
-        }, 800); // Slight delay for smoother transition
+        }, 800);
 
     } catch (error) {
         console.error(error);
@@ -111,6 +117,6 @@ async function predict() {
         scanOverlay.classList.add('hidden');
         analyzeBtn.disabled = false;
         analyzeBtn.innerText = "Run Neural Analysis";
-        alert("Server connection failed. Ensure api.py is running.");
+        alert("Server connection failed. Please check if the API backend is running.");
     }
 }
