@@ -1,61 +1,69 @@
-# ═══════════════════════════════════════════════════
-# .dockerignore — Exclude everything NOT needed by the API
-# ═══════════════════════════════════════════════════
+# ============================================================
+# Stage 1: Builder - Install Python dependencies
+# ============================================================
+FROM python:3.11-slim AS builder
 
-# ── Training data & datasets (large, inference-only at runtime) ──
-Dataset/
-data/
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
+WORKDIR /build
 
+COPY requirements.txt .
 
-# ── Training-only code & artifacts ──
-training/
-results/
-train.py
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
-# ── Frontend (deployed separately on Vercel) ──
-frontend/
+RUN pip install --upgrade pip
 
+# Install CPU-only PyTorch
+RUN pip install --no-cache-dir \
+    torch torchvision \
+    --index-url https://download.pytorch.org/whl/cpu
 
+# Install remaining dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-# ── Sample/test images ──
-image/
+# ============================================================
+# Stage 2: Runtime
+# ============================================================
+FROM python:3.11-slim
 
-# ── Documentation & notebooks ──
-notebooks/
-Report/
-README.md
-LICENSE
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-# ── Python caches ──
-__pycache__/
-**/__pycache__/
-*.pyc
-*.pyo
-*.pyd
+WORKDIR /app
 
-# ── Jupyter notebooks ──
-*.ipynb
-.ipynb_checkpoints/
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
-# ── Version control ──
-.git/
-.gitignore
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 && \
+    rm -rf /var/lib/apt/lists/*
 
-# ── Docker & deployment config (not needed inside image) ──
-docker-compose*.yml
+RUN adduser --disabled-password --gecos "" appuser
 
-# ── Environment files (secrets should be in Secret Manager) ──
-.env
-.env.*
-.env.local
-.env.production
+# Copy application files
+COPY api.py .
+COPY requirements.txt .
 
-# ── IDE / Editor / OS files ──
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-Thumbs.db
+COPY config/ config/
+COPY models/ models/
+COPY utils/ utils/
+COPY checkpoints/ checkpoints/
+
+# ===================== DEBUG =====================
+RUN echo "========== CHECKPOINTS ==========" && \
+    ls -lah checkpoints/ && \
+    echo "========== FIND PTH ==========" && \
+    find /app -name "*.pth"
+# =================================================
+
+RUN chown -R appuser:appuser /app
+
+USER appuser
+
+EXPOSE 8080
+
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 0 --access-logfile - --error-logfile - api:app"]
