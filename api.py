@@ -62,23 +62,29 @@ def validate_xray(image):
     # Check 1: Aspect Ratio (chest X-rays are roughly square)
     # ----------------------------------------------------------
     aspect = w / h if h > 0 else 0
-    if aspect < 0.6 or aspect > 1.7:
+    if aspect < 0.5 or aspect > 2.0:
         return False, "Image aspect ratio is not consistent with a chest X-ray."
 
     # ----------------------------------------------------------
-    # Check 2: Near-Grayscale (X-rays are monochrome)
-    # R, G, B channels should be nearly identical.
+    # Check 2: Low Saturation (X-rays are near-monochrome)
+    # Even warm-tinted X-rays have low color saturation.
+    # Real photos (feet, faces, objects) have high saturation.
+    # Uses HSV color space for robust color detection.
     # ----------------------------------------------------------
-    r, g, b = rgb[:, :, 0], rgb[:, :, 1], rgb[:, :, 2]
+    r, g, b = rgb[:, :, 0] / 255.0, rgb[:, :, 1] / 255.0, rgb[:, :, 2] / 255.0
 
-    # Mean absolute difference across channels
-    rg_diff = np.abs(r - g).mean()
-    rb_diff = np.abs(r - b).mean()
-    gb_diff = np.abs(g - b).mean()
-    color_deviation = (rg_diff + rb_diff + gb_diff) / 3.0
+    cmax = np.maximum(np.maximum(r, g), b)
+    cmin = np.minimum(np.minimum(r, g), b)
+    delta = cmax - cmin
 
-    if color_deviation > 35.0:
-        return False, "Image contains too much color to be a chest X-ray."
+    # Saturation = delta / cmax (where cmax > 0)
+    saturation = np.where(cmax > 0, delta / cmax, 0)
+    mean_saturation = saturation.mean()
+
+    # X-rays (even warm-tinted) typically have saturation < 0.18
+    # Real-world color photos typically have saturation > 0.25
+    if mean_saturation > 0.22:
+        return False, "Image contains too much color saturation to be a chest X-ray."
 
     # ----------------------------------------------------------
     # Check 3: Intensity Distribution
@@ -87,35 +93,11 @@ def validate_xray(image):
     # ----------------------------------------------------------
     std_dev = gray.std()
 
-    if std_dev < 20.0:
+    if std_dev < 15.0:
         return False, "Image intensity range is too narrow (appears blank or uniform)."
 
-    if std_dev > 120.0:
-        return False, "Image intensity distribution is not consistent with a chest X-ray."
-
-    # ----------------------------------------------------------
-    # Check 4: Dark Border Ratio
-    # X-rays typically have dark collimation borders.
-    # Sample border strips and check fraction of dark pixels.
-    # ----------------------------------------------------------
-    border_size = max(int(min(h, w) * 0.08), 5)
-
-    top = gray[:border_size, :]
-    bottom = gray[-border_size:, :]
-    left = gray[:, :border_size]
-    right = gray[:, -border_size:]
-
-    border_pixels = np.concatenate([
-        top.flatten(),
-        bottom.flatten(),
-        left.flatten(),
-        right.flatten()
-    ])
-
-    dark_fraction = (border_pixels < 50).mean()
-
-    if dark_fraction < 0.20:
-        return False, "Image lacks the dark borders typical of a chest X-ray."
+    if std_dev > 130.0:
+        return False, "Image intensity distribution is not consistent with a medical image."
 
     # ----------------------------------------------------------
     # All checks passed
