@@ -94,10 +94,16 @@ def validate_xray(image):
     std_dev = float(gray.std())
     aspect = float(w / h) if h > 0 else 0
 
+    # Brightness stats
+    mean_brightness = float(gray.mean())
+    dark_ratio = float((gray < 60).mean())
+
     debug_stats = {
         "mean_saturation": round(mean_sat, 4),
         "hue_std": round(hue_std, 2),
         "intensity_std": round(std_dev, 2),
+        "mean_brightness": round(mean_brightness, 2),
+        "dark_pixel_ratio": round(dark_ratio, 4),
         "aspect_ratio": round(aspect, 3),
         "size": f"{w}x{h}"
     }
@@ -132,6 +138,15 @@ def validate_xray(image):
 
     if std_dev > 130.0:
         return False, "Image intensity is not consistent with a medical image.", debug_stats
+
+    # ----------------------------------------------------------
+    # Check 4: Dark Region Check
+    # X-rays always have dark background regions (collimation,
+    # lung fields). At least 20% of pixels should be dark.
+    # Bright photos (hands, faces, objects in daylight) fail this.
+    # ----------------------------------------------------------
+    if dark_ratio < 0.15 and mean_brightness > 150:
+        return False, "Image is too bright — chest X-rays have dark background regions.", debug_stats
 
     # ----------------------------------------------------------
     # All checks passed
