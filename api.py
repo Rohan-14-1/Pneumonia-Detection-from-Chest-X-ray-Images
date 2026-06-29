@@ -77,7 +77,7 @@ def validate_xray(image):
     gb_diff = np.abs(g - b).mean()
     color_deviation = (rg_diff + rb_diff + gb_diff) / 3.0
 
-    if color_deviation > 15.0:
+    if color_deviation > 35.0:
         return False, "Image contains too much color to be a chest X-ray."
 
     # ----------------------------------------------------------
@@ -87,10 +87,10 @@ def validate_xray(image):
     # ----------------------------------------------------------
     std_dev = gray.std()
 
-    if std_dev < 25.0:
+    if std_dev < 20.0:
         return False, "Image intensity range is too narrow (appears blank or uniform)."
 
-    if std_dev > 110.0:
+    if std_dev > 120.0:
         return False, "Image intensity distribution is not consistent with a chest X-ray."
 
     # ----------------------------------------------------------
@@ -114,7 +114,7 @@ def validate_xray(image):
 
     dark_fraction = (border_pixels < 50).mean()
 
-    if dark_fraction < 0.30:
+    if dark_fraction < 0.20:
         return False, "Image lacks the dark borders typical of a chest X-ray."
 
     # ----------------------------------------------------------
