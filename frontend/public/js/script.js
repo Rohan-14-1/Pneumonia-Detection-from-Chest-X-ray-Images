@@ -18,6 +18,11 @@ const analyzeBtn = document.getElementById('analyzeBtn');
 const loader = document.getElementById('loader');
 const resultBox = document.getElementById('resultBox');
 
+// Rejection elements
+const rejectionBox = document.getElementById('rejectionBox');
+const rejectionMessage = document.getElementById('rejectionMessage');
+const rejectionDetail = document.getElementById('rejectionDetail');
+
 // Result elements
 const predictionText = document.getElementById('predictionText');
 const confidenceText = document.getElementById('confidenceText');
@@ -121,6 +126,7 @@ async function predict() {
 
     // UI → Loading state
     resultBox.classList.add('hidden');
+    rejectionBox.classList.add('hidden');
     loader.classList.remove('hidden');
     analyzeBtn.disabled = true;
     analyzeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
@@ -137,6 +143,16 @@ async function predict() {
 
         if (!response.ok) {
             const errData = await response.json().catch(() => ({}));
+
+            // Handle X-ray validation rejection
+            if (errData.validation === 'failed') {
+                loader.classList.add('hidden');
+                analyzeBtn.disabled = false;
+                analyzeBtn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Analyze X-ray with AI';
+                showRejection(errData.error, errData.detail);
+                return;
+            }
+
             throw new Error(errData.error || `Server error (${response.status})`);
         }
 
@@ -155,6 +171,22 @@ async function predict() {
         analyzeBtn.disabled = false;
         analyzeBtn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Analyze X-ray with AI';
         alert(`Analysis failed: ${error.message}\n\nPlease ensure the API server is running.`);
+    }
+}
+
+
+// ═══════════════ SHOW REJECTION ═══════════════
+function showRejection(message, detail) {
+    resultBox.classList.add('hidden');
+    rejectionBox.classList.remove('hidden');
+
+    if (message) {
+        rejectionMessage.innerText = message;
+    }
+    if (detail) {
+        rejectionDetail.innerText = detail;
+    } else {
+        rejectionDetail.innerText = '';
     }
 }
 

@@ -179,6 +179,26 @@
 
                         <p id="recommendationText" class="result-recommendation"></p>
                     </div>
+
+                    <!-- REJECTION BOX (shown when image fails X-ray validation) -->
+                    <div id="rejectionBox" class="rejection-box hidden">
+                        <div class="rejection-icon">
+                            <i class="fas fa-triangle-exclamation"></i>
+                        </div>
+                        <h3 class="rejection-title">Not a Chest X-ray</h3>
+                        <p id="rejectionMessage" class="rejection-message">
+                            This image does not appear to be a chest X-ray. Please upload a valid chest X-ray image for analysis.
+                        </p>
+                        <p id="rejectionDetail" class="rejection-detail"></p>
+                        <div class="rejection-tips">
+                            <p class="rejection-tips-title"><i class="fas fa-lightbulb"></i> Tips</p>
+                            <ul>
+                                <li>Use a PA or AP chest X-ray image</li>
+                                <li>Ensure the image is in grayscale (standard X-ray format)</li>
+                                <li>Supported formats: PNG, JPG, JPEG</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
