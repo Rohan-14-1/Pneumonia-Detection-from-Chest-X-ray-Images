@@ -49,7 +49,7 @@ def validate_xray(image):
     using heuristic checks on pixel statistics.
 
     Returns:
-        (bool, str) — (is_valid, reason_if_invalid)
+        (bool, str, dict) — (is_valid, reason_if_invalid, debug_stats)
     """
 
     # Convert to numpy arrays
@@ -58,51 +58,85 @@ def validate_xray(image):
 
     h, w = gray.shape
 
-    # ----------------------------------------------------------
-    # Check 1: Aspect Ratio (chest X-rays are roughly square)
-    # ----------------------------------------------------------
-    aspect = w / h if h > 0 else 0
-    if aspect < 0.5 or aspect > 2.0:
-        return False, "Image aspect ratio is not consistent with a chest X-ray."
-
-    # ----------------------------------------------------------
-    # Check 2: Low Saturation (X-rays are near-monochrome)
-    # Even warm-tinted X-rays have low color saturation.
-    # Real photos (feet, faces, objects) have high saturation.
-    # Uses HSV color space for robust color detection.
-    # ----------------------------------------------------------
+    # Compute HSV values for color analysis
     r, g, b = rgb[:, :, 0] / 255.0, rgb[:, :, 1] / 255.0, rgb[:, :, 2] / 255.0
-
     cmax = np.maximum(np.maximum(r, g), b)
     cmin = np.minimum(np.minimum(r, g), b)
     delta = cmax - cmin
 
-    # Saturation = delta / cmax (where cmax > 0)
+    # Saturation
     saturation = np.where(cmax > 0, delta / cmax, 0)
-    mean_saturation = saturation.mean()
+    mean_sat = float(saturation.mean())
 
-    # X-rays (even warm-tinted) typically have saturation < 0.18
-    # Real-world color photos typically have saturation > 0.25
-    if mean_saturation > 0.22:
-        return False, "Image contains too much color saturation to be a chest X-ray."
+    # Hue (0-360)
+    hue = np.zeros_like(delta)
+    mask = delta > 0.01
+    # Where R is max
+    r_max = mask & (cmax == r)
+    hue[r_max] = (60 * ((g[r_max] - b[r_max]) / delta[r_max])) % 360
+    # Where G is max
+    g_max = mask & (cmax == g)
+    hue[g_max] = (60 * ((b[g_max] - r[g_max]) / delta[g_max]) + 120) % 360
+    # Where B is max
+    b_max = mask & (cmax == b)
+    hue[b_max] = (60 * ((r[b_max] - g[b_max]) / delta[b_max]) + 240) % 360
+
+    # Hue diversity: std dev of hue in saturated regions only
+    sat_mask = saturation > 0.10
+    if sat_mask.sum() > 100:
+        hue_in_sat = hue[sat_mask]
+        hue_std = float(np.std(hue_in_sat))
+    else:
+        # Very few saturated pixels — image is essentially grayscale
+        hue_std = 0.0
+
+    # Intensity stats
+    std_dev = float(gray.std())
+    aspect = float(w / h) if h > 0 else 0
+
+    debug_stats = {
+        "mean_saturation": round(mean_sat, 4),
+        "hue_std": round(hue_std, 2),
+        "intensity_std": round(std_dev, 2),
+        "aspect_ratio": round(aspect, 3),
+        "size": f"{w}x{h}"
+    }
+
+    # ----------------------------------------------------------
+    # Check 1: Aspect Ratio
+    # ----------------------------------------------------------
+    if aspect < 0.5 or aspect > 2.0:
+        return False, "Image aspect ratio is not consistent with a chest X-ray.", debug_stats
+
+    # ----------------------------------------------------------
+    # Check 2: Color Check (Saturation + Hue Diversity)
+    #
+    # Strategy:
+    #   - Low saturation (< 0.15) → Pass (clearly grayscale/near-gray)
+    #   - Medium saturation (0.15–0.45) → Check hue diversity
+    #       - Low hue std (< 50) → Pass (uniform tint, like a warm X-ray)
+    #       - High hue std (>= 50) → Reject (diverse colors, like a photo)
+    #   - High saturation (> 0.45) → Reject (definitely a color photo)
+    # ----------------------------------------------------------
+    if mean_sat > 0.45:
+        return False, "Image contains too much color to be a chest X-ray.", debug_stats
+
+    if mean_sat > 0.15 and hue_std >= 50.0:
+        return False, "Image has too many different colors to be a chest X-ray.", debug_stats
 
     # ----------------------------------------------------------
     # Check 3: Intensity Distribution
-    # X-rays have a wide spread of intensities (dark background,
-    # bright bones). StdDev should be in a characteristic range.
     # ----------------------------------------------------------
-    std_dev = gray.std()
-
     if std_dev < 15.0:
-        return False, "Image intensity range is too narrow (appears blank or uniform)."
+        return False, "Image appears blank or uniform.", debug_stats
 
     if std_dev > 130.0:
-        return False, "Image intensity distribution is not consistent with a medical image."
+        return False, "Image intensity is not consistent with a medical image.", debug_stats
 
     # ----------------------------------------------------------
     # All checks passed
     # ----------------------------------------------------------
-    return True, ""
+    return True, "", debug_stats
 
 
 # ============================================================
@@ -158,13 +192,14 @@ def predict():
         image = Image.open(file).convert("RGB")
 
         # ── Validate that the image is a chest X-ray ──
-        is_valid, reason = validate_xray(image)
+        is_valid, reason, debug_stats = validate_xray(image)
 
         if not is_valid:
             return jsonify({
                 "error": "Invalid image. Please upload a chest X-ray image.",
                 "detail": reason,
-                "validation": "failed"
+                "validation": "failed",
+                "debug": debug_stats
             }), 400
 
         # ── Run CNN prediction ──
