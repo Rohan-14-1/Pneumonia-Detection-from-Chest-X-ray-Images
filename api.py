@@ -1,14 +1,31 @@
+import os
+
+# ============================================================
+# Thread Limits (MUST be set before importing torch)
+# ============================================================
+# PyTorch spawns native OS threads for tensor ops by default —
+# one per CPU core. Combined with gunicorn's threaded workers,
+# this multiplies memory usage and was causing OOM crashes on
+# Render's free tier (512MB RAM). Setting these env vars before
+# torch is imported forces it to use a single thread for
+# intra-op parallelism, cutting memory overhead significantly.
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import torch
 from torchvision import transforms
 from PIL import Image
 import numpy as np
-import os
 
 # Import model and configuration
 from models.cnn_model import CNNModel
 from config.config import *
+
+# Belt-and-suspenders: also set this via the API, in case torch
+# was already partially initialized by an import above.
+torch.set_num_threads(1)
 
 # ============================================================
 # Flask App
